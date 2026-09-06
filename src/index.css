@@ -3178,3 +3178,94 @@ a {
 
 }
 
+
+/* =========================================================
+   FINAL - DOCUMENT ACTIONS MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .archive-all-files .clients-table-wrap {
+    width: 100%;
+    overflow-x: visible !important;
+  }
+
+  .archive-all-files .clients-table {
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .archive-all-files .clients-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .archive-all-files .clients-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .archive-all-files .clients-table tbody td:last-child {
+    display: block !important;
+    width: 100%;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    padding: 12px 0 0 !important;
+    margin-top: 8px;
+    border-top: 1px solid #edf0f3 !important;
+  }
+
+  .archive-all-files .document-actions {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    min-width: 0 !important;
+    gap: 8px;
+    flex-wrap: nowrap !important;
+  }
+
+  .archive-all-files .document-action-button {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 42px;
+    height: 42px;
+    padding: 0 6px;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  .archive-all-files .document-action-button span {
+    display: inline !important;
+    font-size: 11px;
+  }
+
+  .archive-all-files .document-action-button svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 380px) {
+  .archive-all-files .document-actions {
+    gap: 6px;
+  }
+
+  .archive-all-files .document-action-button {
+    gap: 3px;
+    padding: 0 4px;
+  }
+
+  .archive-all-files .document-action-button span {
+    font-size: 10px;
+  }
+}
