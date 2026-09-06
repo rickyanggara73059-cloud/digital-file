@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import type { ReactNode } from "react"
 import { AuthProvider, useAuth } from "./auth/AuthProvider"
 import Login from "./pages/Login"
+import InviteActivation from "./pages/InviteActivation"
 import { supabase } from "./lib/supabase"
 import { BrowserRouter, Navigate, NavLink, Route, Routes, useNavigate, useParams } from "react-router-dom"
 import * as mammoth from "mammoth"
@@ -3420,6 +3421,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginRoute />} />
+          <Route path="/auth/invite" element={<InviteActivation />} />
 
           <Route
             path="/"
@@ -3473,6 +3475,7 @@ function App() {
   )
 }
 export default App
+
 
 
 
