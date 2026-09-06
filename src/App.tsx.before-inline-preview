@@ -14,8 +14,6 @@ import {
   FileText,
   FolderOpen,
   LayoutDashboard,
-  Menu,
-  X,
   Pencil,
   Trash2,
   LogOut,
@@ -24,11 +22,7 @@ import {
   Users,
 } from "lucide-react"
 
-function Sidebar({
-  onClose,
-}: {
-  onClose?: () => void
-}) {
+function Sidebar() {
   const { user, signOut } = useAuth()
 
   async function handleSignOut() {
@@ -40,15 +34,6 @@ function Sidebar({
   }
   return (
     <aside className="sidebar">
-      <button
-        type="button"
-        className="mobile-sidebar-close"
-        onClick={onClose}
-        aria-label="Tutup menu"
-      >
-        <X size={20} />
-      </button>
-
       <div className="brand">
         <div className="brand-mark">
           <Archive size={22} strokeWidth={2} />
@@ -69,7 +54,6 @@ function Sidebar({
           className={({ isActive }) =>
             `nav-item ${isActive ? "active" : ""}`
           }
-          onClick={onClose}
         >
           <LayoutDashboard size={19} />
           <span>Dashboard</span>
@@ -80,7 +64,6 @@ function Sidebar({
           className={({ isActive }) =>
             `nav-item ${isActive ? "active" : ""}`
           }
-          onClick={onClose}
         >
           <Users size={19} />
           <span>Klien</span>
@@ -91,7 +74,6 @@ function Sidebar({
           className={({ isActive }) =>
             `nav-item ${isActive ? "active" : ""}`
           }
-          onClick={onClose}
         >
           <BriefcaseBusiness size={19} />
           <span>Perkara</span>
@@ -102,7 +84,6 @@ function Sidebar({
           className={({ isActive }) =>
             `nav-item ${isActive ? "active" : ""}`
           }
-          onClick={onClose}
         >
           <FolderOpen size={19} />
           <span>Berkas</span>
@@ -167,114 +148,18 @@ function Topbar({
   )
 }
 
-function MobileBottomNavigation() {
-  return (
-    <nav className="mobile-bottom-navigation" aria-label="Navigasi utama">
-      <NavLink
-        to="/"
-        className={({ isActive }) =>
-          isActive ? "mobile-bottom-item active" : "mobile-bottom-item"
-        }
-      >
-        <LayoutDashboard size={21} />
-        <span>Home</span>
-      </NavLink>
-
-      <NavLink
-        to="/klien"
-        className={({ isActive }) =>
-          isActive ? "mobile-bottom-item active" : "mobile-bottom-item"
-        }
-      >
-        <Users size={21} />
-        <span>Klien</span>
-      </NavLink>
-
-      <NavLink
-        to="/perkara"
-        className={({ isActive }) =>
-          isActive ? "mobile-bottom-item active" : "mobile-bottom-item"
-        }
-      >
-        <BriefcaseBusiness size={21} />
-        <span>Perkara</span>
-      </NavLink>
-
-      <NavLink
-        to="/berkas"
-        className={({ isActive }) =>
-          isActive ? "mobile-bottom-item active" : "mobile-bottom-item"
-        }
-      >
-        <FolderOpen size={21} />
-        <span>Arsip</span>
-      </NavLink>
-    </nav>
-  )
-}
 function PageLayout({
   children,
 }: {
   children: ReactNode
 }) {
-  const [mobileMenuOpen, setMobileMenuOpen] =
-    useState(false)
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setMobileMenuOpen(false)
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handleKeyDown
-      )
-  }, [])
-
-  useEffect(() => {
-    document.body.style.overflow =
-      mobileMenuOpen ? "hidden" : ""
-
-    return () => {
-      document.body.style.overflow = ""
-    }
-  }, [mobileMenuOpen])
-
   return (
     <div className="app-shell">
-      {mobileMenuOpen ? (
-        <button
-          type="button"
-          className="mobile-sidebar-backdrop"
-          onClick={() => setMobileMenuOpen(false)}
-          aria-label="Tutup menu"
-        />
-      ) : null}
-
-      <Sidebar
-        onClose={() => setMobileMenuOpen(false)}
-      />
+      <Sidebar />
 
       <main className="main-content">
-        <button
-          type="button"
-          className="mobile-menu-button"
-          onClick={() => setMobileMenuOpen(true)}
-          aria-label="Buka menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          <Menu size={22} />
-        </button>
-
         {children}
       </main>
-
-      <MobileBottomNavigation />
     </div>
   )
 }
@@ -1533,432 +1418,6 @@ function Cases() {
     </PageLayout>
   )
 }
-function CaseArchiveIndex() {
-  const { user } = useAuth()
-
-  const [cases, setCases] = useState<
-    Array<{
-      id: string
-      client_id: string
-      court_id: string | null
-      case_type_id: string | null
-      case_subtype_id: string | null
-      case_number: string
-      title: string
-      status: string
-      created_at: string
-    }>
-  >([])
-
-  const [clients, setClients] = useState<
-    Array<{
-      id: string
-      name: string
-    }>
-  >([])
-
-  const [courts, setCourts] = useState<
-    Array<{
-      id: string
-      name: string
-    }>
-  >([])
-
-  const [caseTypes, setCaseTypes] = useState<
-    Array<{
-      id: string
-      name: string
-    }>
-  >([])
-
-  const [caseSubtypes, setCaseSubtypes] = useState<
-    Array<{
-      id: string
-      name: string
-    }>
-  >([])
-
-  const [documentCounts, setDocumentCounts] = useState<
-    Record<string, number>
-  >({})
-
-  const [search, setSearch] = useState("")
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-
-  useEffect(() => {
-    async function loadArchiveIndex() {
-      if (!user) {
-        setLoading(false)
-        return
-      }
-
-      setLoading(true)
-      setError("")
-
-      const [
-        casesResult,
-        clientsResult,
-        courtsResult,
-        caseTypesResult,
-        caseSubtypesResult,
-        documentsResult,
-      ] = await Promise.all([
-        supabase
-          .from("cases")
-          .select(
-            "id, client_id, court_id, case_type_id, case_subtype_id, case_number, title, status, created_at"
-          )
-          .eq("lawyer_id", user.id)
-          .order("created_at", { ascending: false }),
-
-        supabase
-          .from("clients")
-          .select("id, name")
-          .eq("lawyer_id", user.id)
-          .order("name"),
-
-        supabase
-          .from("courts")
-          .select("id, name")
-          .order("name"),
-
-        supabase
-          .from("case_types")
-          .select("id, name")
-          .order("name"),
-
-        supabase
-          .from("case_subtypes")
-          .select("id, name")
-          .order("name"),
-
-        supabase
-          .from("documents")
-          .select("case_id, is_current")
-          .eq("lawyer_id", user.id),
-      ])
-
-      const firstError =
-        casesResult.error ??
-        clientsResult.error ??
-        courtsResult.error ??
-        caseTypesResult.error ??
-        caseSubtypesResult.error ??
-        documentsResult.error
-
-      if (firstError) {
-        console.error("Gagal memuat indeks arsip:", firstError)
-        setError(
-          `Gagal memuat indeks arsip: ${firstError.message}`
-        )
-        setLoading(false)
-        return
-      }
-
-      setCases((casesResult.data ?? []) as typeof cases)
-      setClients((clientsResult.data ?? []) as typeof clients)
-      setCourts((courtsResult.data ?? []) as typeof courts)
-      setCaseTypes(
-        (caseTypesResult.data ?? []) as typeof caseTypes
-      )
-      setCaseSubtypes(
-        (caseSubtypesResult.data ?? []) as typeof caseSubtypes
-      )
-
-      const counts: Record<string, number> = {}
-
-      for (const document of documentsResult.data ?? []) {
-        if (!document.is_current) continue
-
-        counts[document.case_id] =
-          (counts[document.case_id] ?? 0) + 1
-      }
-
-      setDocumentCounts(counts)
-      setLoading(false)
-    }
-
-    void loadArchiveIndex()
-  }, [user])
-
-  function getClientName(clientId: string) {
-    return (
-      clients.find((client) => client.id === clientId)?.name ??
-      "Klien tidak ditemukan"
-    )
-  }
-
-  function getCourtName(courtId: string | null) {
-    if (!courtId) return "Pengadilan belum ditentukan"
-
-    return (
-      courts.find((court) => court.id === courtId)?.name ??
-      "Pengadilan belum ditentukan"
-    )
-  }
-
-  function getCaseTypeName(caseTypeId: string | null) {
-    if (!caseTypeId) return ""
-
-    return (
-      caseTypes.find((type) => type.id === caseTypeId)?.name ??
-      ""
-    )
-  }
-
-  function getCaseSubtypeName(caseSubtypeId: string | null) {
-    if (!caseSubtypeId) return ""
-
-    return (
-      caseSubtypes.find(
-        (subtype) => subtype.id === caseSubtypeId
-      )?.name ?? ""
-    )
-  }
-
-  const filteredCases = cases.filter((item) => {
-    const clientName = getClientName(item.client_id)
-    const courtName = getCourtName(item.court_id)
-    const caseTypeName = getCaseTypeName(item.case_type_id)
-    const caseSubtypeName = getCaseSubtypeName(
-      item.case_subtype_id
-    )
-
-    const haystack = [
-      clientName,
-      item.case_number,
-      item.title,
-      courtName,
-      caseTypeName,
-      caseSubtypeName,
-    ]
-      .join(" ")
-      .toLowerCase()
-
-    return haystack.includes(search.trim().toLowerCase())
-  })
-
-  return (
-    <PageLayout>
-      <Topbar
-        title="Berkas"
-        eyebrow="DIGITAL CASE FILE"
-      />
-
-      <section className="page-intro archive-index-intro">
-        <p className="eyebrow">LEMARI ARSIP</p>
-
-        <h2>Indeks Arsip Perkara</h2>
-
-        <p>
-          Temukan perkara terlebih dahulu, lalu buka lemari
-          berkasnya.
-        </p>
-      </section>
-
-      <section className="archive-index-toolbar">
-        <div className="archive-index-search">
-          <Search size={19} />
-
-          <input
-            type="text"
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
-            placeholder="Cari nama klien, nomor perkara, atau judul..."
-            aria-label="Cari perkara"
-          />
-
-          {search ? (
-            <button
-              type="button"
-              className="archive-index-clear"
-              onClick={() => setSearch("")}
-              aria-label="Hapus pencarian"
-            >
-              ×
-            </button>
-          ) : null}
-        </div>
-      </section>
-
-      {loading ? (
-        <section className="document-card">
-          <div className="empty-state">
-            <div className="empty-icon">
-              <FolderOpen size={30} />
-            </div>
-
-            <h4>Memuat indeks arsip...</h4>
-
-            <p>
-              Mengambil daftar perkara dan jumlah berkas.
-            </p>
-          </div>
-        </section>
-      ) : error ? (
-        <section className="document-card">
-          <div className="empty-state">
-            <div className="empty-icon">
-              <FolderOpen size={30} />
-            </div>
-
-            <h4>Indeks arsip tidak dapat dimuat</h4>
-
-            <p>{error}</p>
-          </div>
-        </section>
-      ) : cases.length === 0 ? (
-        <section className="document-card">
-          <div className="empty-state">
-            <div className="empty-icon">
-              <BriefcaseBusiness size={30} />
-            </div>
-
-            <h4>Belum ada perkara</h4>
-
-            <p>
-              Buat perkara terlebih dahulu untuk mulai
-              menyimpan berkas digital.
-            </p>
-
-            <NavLink
-              to="/perkara"
-              className="primary-button"
-            >
-              Buka Perkara
-            </NavLink>
-          </div>
-        </section>
-      ) : filteredCases.length === 0 ? (
-        <section className="document-card">
-          <div className="empty-state">
-            <div className="empty-icon">
-              <Search size={30} />
-            </div>
-
-            <h4>Perkara tidak ditemukan</h4>
-
-            <p>
-              Tidak ada perkara yang sesuai dengan pencarian
-              "{search}".
-            </p>
-
-            <button
-              type="button"
-              className="secondary-button"
-              onClick={() => setSearch("")}
-            >
-              Reset Pencarian
-            </button>
-          </div>
-        </section>
-      ) : (
-        <section className="archive-index-list">
-          <div className="archive-index-heading">
-            <div>
-              <p className="eyebrow">DAFTAR PERKARA</p>
-
-              <h3>
-                {filteredCases.length} perkara
-              </h3>
-            </div>
-
-            <span>
-              {search
-                ? `Hasil pencarian untuk "${search}"`
-                : "Semua perkara tersimpan"}
-            </span>
-          </div>
-
-          <div className="archive-case-grid">
-            {filteredCases.map((item) => {
-              const clientName = getClientName(item.client_id)
-              const courtName = getCourtName(item.court_id)
-              const caseTypeName = getCaseTypeName(
-                item.case_type_id
-              )
-              const caseSubtypeName =
-                getCaseSubtypeName(item.case_subtype_id)
-
-              const documentCount =
-                documentCounts[item.id] ?? 0
-
-              return (
-                <article
-                  key={item.id}
-                  className="archive-case-card"
-                >
-                  <div className="archive-case-card-top">
-                    <div className="archive-case-icon">
-                      <FolderOpen size={22} />
-                    </div>
-
-                    <span className="archive-case-status">
-                      {item.status}
-                    </span>
-                  </div>
-
-                  <div className="archive-case-main">
-                    <p className="eyebrow">KLIEN</p>
-
-                    <h3>{clientName}</h3>
-
-                    <strong>
-                      {item.case_number}
-                    </strong>
-
-                    <p className="archive-case-title">
-                      {item.title}
-                    </p>
-                  </div>
-
-                  <div className="archive-case-meta">
-                    <div>
-                      <span>Pengadilan</span>
-                      <strong>{courtName}</strong>
-                    </div>
-
-                    <div>
-                      <span>Jenis Perkara</span>
-                      <strong>
-                        {caseTypeName || "-"}
-                        {caseSubtypeName
-                          ? ` • ${caseSubtypeName}`
-                          : ""}
-                      </strong>
-                    </div>
-                  </div>
-
-                  <div className="archive-case-footer">
-                    <div className="archive-case-count">
-                      <FolderOpen size={16} />
-
-                      <span>
-                        {documentCount} berkas aktif
-                      </span>
-                    </div>
-
-                    <NavLink
-                      to={`/berkas/${item.id}`}
-                      className="archive-case-open"
-                    >
-                      Buka Lemari
-                      <span aria-hidden="true">→</span>
-                    </NavLink>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-        </section>
-      )}
-    </PageLayout>
-  )
-}
-
 function Documents() {
   const { caseId } = useParams()
   const { user } = useAuth()
@@ -2006,10 +1465,6 @@ function Documents() {
   const [uploadDescription, setUploadDescription] = useState("")
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState("")
-
-  const [documentSearch, setDocumentSearch] = useState("")
-  const [documentCategoryFilter, setDocumentCategoryFilter] = useState("all")
-  const [documentFormatFilter, setDocumentFormatFilter] = useState("all")
 
   const [showPreview, setShowPreview] = useState(false)
   const [previewName, setPreviewName] = useState("")
@@ -2609,39 +2064,11 @@ function Documents() {
     )
   }
 
+  const currentDocuments = documents.filter(
+    (document) => document.is_current
+  )
+
   const allDocuments = documents
-
-  const filteredDocuments = allDocuments.filter((document) => {
-    const search = documentSearch.trim().toLowerCase()
-
-    const categoryName =
-      categories.find(
-        (category) => category.id === document.category_id
-      )?.name ?? ""
-
-    const matchesSearch =
-      search === "" ||
-      document.file_name.toLowerCase().includes(search) ||
-      (document.description ?? "").toLowerCase().includes(search) ||
-      categoryName.toLowerCase().includes(search)
-
-    const matchesCategory =
-      documentCategoryFilter === "all" ||
-      document.category_id === documentCategoryFilter
-
-    const extension =
-      document.file_extension?.toLowerCase() ?? ""
-
-    const matchesFormat =
-      documentFormatFilter === "all" ||
-      extension === documentFormatFilter
-
-    return (
-      matchesSearch &&
-      matchesCategory &&
-      matchesFormat
-    )
-  })
 
   return (
     <PageLayout>
@@ -2788,8 +2215,8 @@ function Documents() {
                 <h3>Ringkasan Berkas</h3>
 
                 <span>
-                  {filteredDocuments.length} berkas ditampilkan dari
-                  {allDocuments.length} berkas
+                  {currentDocuments.length} berkas aktif dalam
+                  perkara ini
                 </span>
               </div>
 
@@ -2801,67 +2228,6 @@ function Documents() {
                 <Upload size={15} />
                 Upload Berkas
               </button>
-            </div>
-
-            <div className="archive-filter-toolbar">
-              <div className="archive-filter-search">
-                <Search size={18} />
-
-                <input
-                  type="text"
-                  value={documentSearch}
-                  onChange={(event) =>
-                    setDocumentSearch(event.target.value)
-                  }
-                  placeholder="Cari nama berkas, deskripsi, atau kategori..."
-                  aria-label="Cari berkas"
-                />
-
-                {documentSearch ? (
-                  <button
-                    type="button"
-                    className="archive-filter-clear"
-                    onClick={() => setDocumentSearch("")}
-                    aria-label="Hapus pencarian"
-                  >
-                    ×
-                  </button>
-                ) : null}
-              </div>
-
-              <select
-                className="archive-filter-select"
-                value={documentCategoryFilter}
-                onChange={(event) =>
-                  setDocumentCategoryFilter(event.target.value)
-                }
-                aria-label="Filter kategori"
-              >
-                <option value="all">Semua Kategori</option>
-
-                {categories.map((category) => (
-                  <option
-                    key={category.id}
-                    value={category.id}
-                  >
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                className="archive-filter-select"
-                value={documentFormatFilter}
-                onChange={(event) =>
-                  setDocumentFormatFilter(event.target.value)
-                }
-                aria-label="Filter format"
-              >
-                <option value="all">Semua Format</option>
-                <option value="pdf">PDF</option>
-                <option value="doc">DOC</option>
-                <option value="docx">DOCX</option>
-              </select>
             </div>
 
             {allDocuments.length === 0 ? (
@@ -2885,31 +2251,6 @@ function Documents() {
                   Upload Berkas
                 </button>
               </div>
-            ) : filteredDocuments.length === 0 ? (
-              <div className="empty-state archive-filter-empty">
-                <div className="empty-icon">
-                  <Search size={30} />
-                </div>
-
-                <h4>Berkas tidak ditemukan</h4>
-
-                <p>
-                  Tidak ada berkas yang sesuai dengan pencarian
-                  atau filter yang dipilih.
-                </p>
-
-                <button
-                  type="button"
-                  className="secondary-button"
-                  onClick={() => {
-                    setDocumentSearch("")
-                    setDocumentCategoryFilter("all")
-                    setDocumentFormatFilter("all")
-                  }}
-                >
-                  Reset Filter
-                </button>
-              </div>
             ) : (
               <div className="clients-table-wrap">
                 <table className="clients-table">
@@ -2925,7 +2266,7 @@ function Documents() {
                   </thead>
 
                   <tbody>
-                    {filteredDocuments.map((document) => (
+                    {allDocuments.map((document) => (
                       <tr key={document.id}>
                         <td>
                           <strong>{document.file_name}</strong>
@@ -3015,234 +2356,77 @@ function Documents() {
             )}
           </section>
 
-          {showPreview
-  ? createPortal(
-      <div
-        onMouseDown={() => {
-          if (!previewLoading) {
-            setShowPreview(false)
-          }
-        }}
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 2147483647,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "24px",
-          background: "rgba(7, 15, 29, 0.78)",
-          backdropFilter: "blur(6px)",
-        }}
-      >
-        <div
-          onMouseDown={(event) => event.stopPropagation()}
-          style={{
-            position: "relative",
-            zIndex: 2147483647,
-            display: "flex",
-            flexDirection: "column",
-            width: "min(1100px, 94vw)",
-            height: "min(88vh, 900px)",
-            maxHeight: "calc(100vh - 48px)",
-            minHeight: "400px",
-            overflow: "hidden",
-            background: "#ffffff",
-            color: "#172033",
-            border: "1px solid #d8dee8",
-            borderRadius: "20px",
-            boxShadow: "0 30px 90px rgba(0, 0, 0, 0.45)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "20px",
-              flexShrink: 0,
-              padding: "20px 24px",
-              background: "#ffffff",
-              color: "#172033",
-              borderBottom: "1px solid #e5e9ef",
-            }}
-          >
-            <div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  color: "#b58a2b",
-                }}
-              >
-                PREVIEW DOKUMEN
-              </p>
-
-              <h3
-                style={{
-                  margin: "5px 0 0",
-                  fontSize: "18px",
-                  lineHeight: 1.4,
-                  color: "#172033",
-                  wordBreak: "break-word",
-                }}
-              >
-                {previewName}
-              </h3>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowPreview(false)}
-              disabled={previewLoading}
-              aria-label="Tutup preview"
-              style={{
-                width: "38px",
-                height: "38px",
-                flexShrink: 0,
-                border: "1px solid #d8dee8",
-                borderRadius: "10px",
-                background: "#ffffff",
-                color: "#172033",
-                fontSize: "24px",
-                lineHeight: 1,
-                cursor: previewLoading ? "not-allowed" : "pointer",
+          {showPreview ? createPortal(
+  <div
+              className="modal-backdrop document-preview-backdrop"
+              onMouseDown={() => {
+                if (!previewLoading) {
+                  setShowPreview(false)
+                }
               }}
             >
-              ×
-            </button>
-          </div>
-
-          <div
-            style={{
-              flex: 1,
-              minHeight: 0,
-              overflow: "auto",
-              padding: "32px",
-              background: "#f3f4f6",
-            }}
-          >
-            {previewLoading ? (
               <div
-                style={{
-                  minHeight: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  color: "#172033",
-                }}
+                className="document-preview-modal"
+                onMouseDown={(event) =>
+                  event.stopPropagation()
+                }
               >
-                <div
-                  style={{
-                    width: "64px",
-                    height: "64px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "18px",
-                    borderRadius: "16px",
-                    background: "#f1eadb",
-                    color: "#b58a2b",
-                  }}
-                >
-                  <FileText size={30} />
+                <div className="document-preview-header">
+                  <div>
+                    <p className="eyebrow">PREVIEW DOKUMEN</p>
+                    <h3>{previewName}</h3>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="modal-close"
+                    onClick={() =>
+                      setShowPreview(false)
+                    }
+                    disabled={previewLoading}
+                    aria-label="Tutup preview"
+                  >
+                    ×
+                  </button>
                 </div>
 
-                <h4
-                  style={{
-                    margin: "0 0 8px",
-                    fontSize: "18px",
-                    color: "#172033",
-                  }}
-                >
-                  Menyiapkan preview...
-                </h4>
+                <div className="document-preview-body">
+                  {previewLoading ? (
+                    <div className="empty-state">
+                      <div className="empty-icon">
+                        <FileText size={30} />
+                      </div>
 
-                <p
-                  style={{
-                    margin: 0,
-                    color: "#667085",
-                  }}
-                >
-                  Dokumen sedang diproses untuk ditampilkan.
-                </p>
-              </div>
-            ) : previewError ? (
-              <div
-                style={{
-                  minHeight: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  color: "#172033",
-                }}
-              >
-                <div
-                  style={{
-                    width: "64px",
-                    height: "64px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "18px",
-                    borderRadius: "16px",
-                    background: "#f5e8e8",
-                    color: "#b42318",
-                  }}
-                >
-                  <FileText size={30} />
+                      <h4>Menyiapkan preview...</h4>
+
+                      <p>
+                        Dokumen sedang diproses untuk
+                        ditampilkan.
+                      </p>
+                    </div>
+                  ) : previewError ? (
+                    <div className="empty-state">
+                      <div className="empty-icon">
+                        <FileText size={30} />
+                      </div>
+
+                      <h4>Preview tidak tersedia</h4>
+
+                      <p>{previewError}</p>
+                    </div>
+                  ) : (
+                    <article
+                      className="document-preview-content"
+                      dangerouslySetInnerHTML={{
+                        __html: previewHtml,
+                      }}
+                    />
+                  )}
                 </div>
-
-                <h4
-                  style={{
-                    margin: "0 0 8px",
-                    fontSize: "18px",
-                    color: "#172033",
-                  }}
-                >
-                  Preview tidak tersedia
-                </h4>
-
-                <p
-                  style={{
-                    maxWidth: "600px",
-                    margin: 0,
-                    color: "#667085",
-                  }}
-                >
-                  {previewError}
-                </p>
               </div>
-            ) : (
-              <article
-                style={{
-                  width: "min(820px, 100%)",
-                  minHeight: "100%",
-                  boxSizing: "border-box",
-                  margin: "0 auto",
-                  padding: "56px 64px",
-                  background: "#ffffff",
-                  color: "#1f2937",
-                  lineHeight: 1.75,
-                  boxShadow: "0 8px 30px rgba(15, 23, 42, 0.08)",
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: previewHtml,
-                }}
-              />
-            )}
-          </div>
-        </div>
-      </div>,
-      document.body
-    )
-  : null}
+            </div>,
+  document.body
+) : null}
           {showUploadModal ? (
             <div
               className="modal-backdrop"
@@ -3452,7 +2636,7 @@ function App() {
             path="/berkas"
             element={
               <ProtectedRoute>
-                <CaseArchiveIndex />
+                <Documents />
               </ProtectedRoute>
             }
           />
@@ -3473,16 +2657,6 @@ function App() {
   )
 }
 export default App
-
-
-
-
-
-
-
-
-
-
 
 
 
