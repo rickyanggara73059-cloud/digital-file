@@ -860,3 +860,286 @@
     justify-content: center;
   }
 }
+
+/* =========================================================
+   FINAL LEGAL GREEN THEME
+   ========================================================= */
+
+.welcome-section {
+  background: linear-gradient(
+    135deg,
+    #0B3B25 0%,
+    #14532D 55%,
+    #166534 100%
+  ) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(198, 161, 91, 0.18) !important;
+}
+
+.welcome-section h2 {
+  color: #FFFFFF !important;
+}
+
+.welcome-section .eyebrow {
+  color: #D4B978 !important;
+}
+
+.welcome-section .welcome-text {
+  color: rgba(255, 255, 255, 0.76) !important;
+}
+
+.welcome-icon {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(212, 185, 120, 0.28) !important;
+  color: #D4B978 !important;
+}
+
+/* Sidebar branding */
+.brand-mark {
+  background: transparent !important;
+  color: #FFFFFF !important;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Gold identity */
+.brand-subtitle,
+.nav-item.active,
+.nav-item[aria-current="page"] {
+  color: #D4B978 !important;
+}
+
+/* Primary action */
+.primary-button {
+  background: #14532D !important;
+  border-color: #14532D !important;
+  color: #FFFFFF !important;
+}
+
+.primary-button:hover {
+  background: #166534 !important;
+  border-color: #166534 !important;
+}
+
+/* Sidebar active */
+.nav-item.active {
+  background: rgba(198, 161, 91, 0.16) !important;
+}
+
+/* Dashboard accent icons */
+.stat-card svg,
+.dashboard-card svg {
+  color: #B48A3C;
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR - FIX PROFILE & LOGOUT
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  /* Brand tetap di atas */
+  .sidebar .brand {
+    flex-shrink: 0 !important;
+  }
+
+  /* Menu menjadi satu-satunya area yang boleh scroll */
+  .sidebar .navigation {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-bottom: 12px !important;
+  }
+
+  /* Profil + logout selalu berada di bawah */
+  .sidebar .sidebar-footer {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    margin-top: auto !important;
+    padding: 14px 0 calc(14px + env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
+    background: #0B3B25 !important;
+    position: relative !important;
+    z-index: 20 !important;
+  }
+
+  .sidebar .sidebar-profile {
+    min-width: 0 !important;
+  }
+
+  /* Tombol logout selalu memiliki area sentuh yang nyaman */
+  .sidebar .logout-button {
+    min-height: 44px !important;
+    min-width: 76px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+    margin: 0 !important;
+    position: relative !important;
+    z-index: 30 !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Jangan biarkan teks profil mendorong tombol keluar */
+  .sidebar .sidebar-profile-info {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .sidebar .sidebar-profile-info strong,
+  .sidebar .sidebar-profile-info span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* iPhone / Android layar pendek */
+@media (max-width: 768px) and (max-height: 700px) {
+
+  .sidebar {
+    padding-top: 16px !important;
+  }
+
+  .sidebar .brand {
+    padding-bottom: 18px !important;
+  }
+
+  .sidebar .sidebar-footer {
+    padding-top: 10px !important;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .sidebar .logout-button {
+    min-height: 44px !important;
+  }
+}
+
+
+/* =========================================================
+   DASHBOARD - COMPACT WELCOME BANNER
+   Supaya seluruh menu dan konten terlihat utuh
+   ========================================================= */
+
+.welcome-section {
+  min-height: 0 !important;
+  padding: 30px 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 32px !important;
+}
+
+.welcome-section h2 {
+  margin: 6px 0 12px !important;
+  font-size: clamp(30px, 2.8vw, 38px) !important;
+  line-height: 1.12 !important;
+  max-width: 720px !important;
+}
+
+.welcome-section .welcome-text {
+  max-width: 700px !important;
+  margin-bottom: 0 !important;
+  line-height: 1.55 !important;
+}
+
+.welcome-icon {
+  width: 120px !important;
+  height: 120px !important;
+  min-width: 120px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Desktop dengan layar lebih pendek */
+@media (min-width: 769px) and (max-height: 850px) {
+  .welcome-section {
+    padding: 24px 34px !important;
+  }
+
+  .welcome-section h2 {
+    font-size: 32px !important;
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .welcome-section .welcome-text {
+    font-size: 13px !important;
+  }
+
+  .welcome-icon {
+    width: 100px !important;
+    height: 100px !important;
+    min-width: 100px !important;
+  }
+}
+
+/* Laptop / desktop */
+@media (min-width: 769px) {
+  .welcome-section h2 br {
+    display: none !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .welcome-section {
+    padding: 24px !important;
+    min-height: auto !important;
+    gap: 18px !important;
+  }
+
+  .welcome-section h2 {
+    font-size: 26px !important;
+    line-height: 1.15 !important;
+    margin: 6px 0 10px !important;
+  }
+
+  .welcome-section .welcome-text {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .welcome-icon {
+    width: 76px !important;
+    height: 76px !important;
+    min-width: 76px !important;
+  }
+}
+
+/* HP kecil */
+@media (max-width: 480px) {
+  .welcome-section {
+    padding: 20px !important;
+  }
+
+  .welcome-section h2 {
+    font-size: 23px !important;
+  }
+
+  .welcome-icon {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+  }
+}
+

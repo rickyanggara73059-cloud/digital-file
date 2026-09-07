@@ -3269,3 +3269,244 @@ a {
     font-size: 10px;
   }
 }
+
+/* =========================================================
+   THEME - THEmis / LEGAL GREEN
+   ========================================================= */
+
+:root {
+  --legal-green-dark: #0B3B25;
+  --legal-green: #14532D;
+  --legal-green-light: #166534;
+  --legal-gold: #C6A15B;
+  --legal-gold-light: #D4B978;
+  --legal-cream: #F7F5EF;
+  --legal-bg: #F5F7F5;
+  --legal-text: #17211B;
+  --legal-muted: #66736B;
+  --legal-border: #DDE5DF;
+}
+
+/* Page */
+body {
+  background: var(--legal-bg);
+  color: var(--legal-text);
+}
+
+/* Sidebar */
+.sidebar {
+  background: linear-gradient(180deg, #0B3B25 0%, #14532D 100%);
+  color: #FFFFFF;
+}
+
+/* Branding */
+.brand {
+  position: relative;
+}
+
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: transparent;
+  color: #FFFFFF;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Brand text */
+.brand-title {
+  color: #FFFFFF;
+}
+
+.brand-subtitle {
+  color: #D4B978;
+}
+
+/* Navigation */
+.nav-label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.nav-item {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.nav-item:hover {
+  background: rgba(198, 161, 91, 0.12);
+  color: #FFFFFF;
+}
+
+.nav-item.active,
+.nav-item[aria-current="page"] {
+  background: rgba(198, 161, 91, 0.16);
+  color: #D4B978;
+}
+
+/* Links */
+a:hover {
+  color: var(--legal-gold);
+}
+
+/* Buttons */
+button {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Common green button classes */
+.btn-primary,
+.button-primary,
+.primary-button {
+  background: var(--legal-green);
+  color: #FFFFFF;
+  border-color: var(--legal-green);
+}
+
+.btn-primary:hover,
+.button-primary:hover,
+.primary-button:hover {
+  background: var(--legal-green-light);
+  border-color: var(--legal-green-light);
+}
+
+/* Gold accent buttons */
+.btn-accent,
+.button-accent {
+  background: var(--legal-gold);
+  color: #FFFFFF;
+  border-color: var(--legal-gold);
+}
+
+.btn-accent:hover,
+.button-accent:hover {
+  background: var(--legal-gold-light);
+}
+
+/* Form focus */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--legal-gold) !important;
+  box-shadow: 0 0 0 3px rgba(198, 161, 91, 0.14);
+}
+
+/* Scrollbar */
+* {
+  scrollbar-color: #8BA896 #F5F7F5;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #F5F7F5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #8BA896;
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #14532D;
+}
+
+/* Document preview */
+.document-preview-body {
+  background: #F5F7F5;
+}
+
+.document-preview-content {
+  color: #17211B;
+}
+
+.document-preview-content h1,
+.document-preview-content h2,
+.document-preview-content h3,
+.document-preview-content h4 {
+  color: #0B3B25;
+}
+
+.document-preview-header {
+  border-bottom-color: #DDE5DF;
+}
+
+
+/* =========================================================
+   THEMIS BRANDING
+   ========================================================= */
+
+.brand-mark {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.login-brand-mark {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.login-brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Legal Green Identity */
+.sidebar {
+  background: #0B3B25 !important;
+}
+
+.nav-item:hover {
+  background: rgba(198, 161, 91, 0.12) !important;
+}
+
+.nav-item.active,
+.nav-item[aria-current="page"] {
+  background: rgba(198, 161, 91, 0.16) !important;
+  color: #D4B978 !important;
+}
+
+.brand-subtitle {
+  color: #D4B978 !important;
+}
+
+.primary-button {
+  background: #14532D !important;
+  border-color: #14532D !important;
+}
+
+.primary-button:hover {
+  background: #166534 !important;
+}
+
+.eyebrow {
+  color: #A27D3E !important;
+}
+
