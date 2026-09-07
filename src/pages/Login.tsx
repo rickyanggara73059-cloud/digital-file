@@ -1,6 +1,6 @@
-﻿import { useState } from "react"
+import { useState } from "react"
 import type { FormEvent } from "react"
-import { Archive, Eye, EyeOff, Lock, Mail } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { supabase } from "../lib/supabase"
 
 export default function Login() {
@@ -35,7 +35,10 @@ export default function Login() {
       <section className="login-card">
         <div className="login-brand">
           <div className="login-brand-mark">
-            <Archive size={28} strokeWidth={2} />
+            <img
+              src="/logo-themis-justice.png"
+              alt="Themis - Dewi Keadilan"
+            />
           </div>
 
           <div>
@@ -116,4 +119,5 @@ export default function Login() {
     </main>
   )
 }
+
 

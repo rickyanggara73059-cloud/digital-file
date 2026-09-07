@@ -3510,3 +3510,155 @@ select:focus {
   color: #A27D3E !important;
 }
 
+
+/* =========================================================
+   LOGIN - FINAL LEGAL GREEN THEME
+   ========================================================= */
+
+.login-page {
+  min-height: 100vh !important;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(198, 161, 91, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #0B3B25 0%,
+      #14532D 55%,
+      #0B3B25 100%
+    ) !important;
+}
+
+.login-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(198, 161, 91, 0.22) !important;
+  box-shadow:
+    0 30px 80px rgba(4, 35, 20, 0.32),
+    0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Themis */
+.login-brand-mark {
+  width: 58px !important;
+  height: 58px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.login-brand-mark img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+/* Branding */
+.login-brand-title {
+  color: #0B3B25 !important;
+}
+
+.login-brand-subtitle {
+  color: #A27D3E !important;
+}
+
+/* Heading */
+.login-heading span {
+  color: #A27D3E !important;
+}
+
+.login-heading h1 {
+  color: #0B3B25 !important;
+}
+
+.login-heading p {
+  color: #66736B !important;
+}
+
+/* Form labels */
+.login-form label {
+  color: #26382D !important;
+}
+
+/* Inputs */
+.login-input {
+  border-color: #DDE5DF !important;
+  background: #FBFCFB !important;
+}
+
+.login-input svg {
+  color: #14532D !important;
+}
+
+.login-input:focus-within {
+  border-color: #C6A15B !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 4px rgba(198, 161, 91, 0.14) !important;
+}
+
+.login-input input {
+  color: #17211B !important;
+}
+
+.login-input input::placeholder {
+  color: #9AA69E !important;
+}
+
+/* Password eye */
+.password-toggle {
+  color: #66736B !important;
+}
+
+.password-toggle:hover {
+  color: #A27D3E !important;
+}
+
+/* Login button */
+.login-submit {
+  background: #14532D !important;
+  color: #FFFFFF !important;
+  border: 1px solid #14532D !important;
+  box-shadow: 0 8px 20px rgba(11, 59, 37, 0.16) !important;
+}
+
+.login-submit:hover {
+  background: #166534 !important;
+  border-color: #166534 !important;
+  box-shadow: 0 12px 26px rgba(11, 59, 37, 0.22) !important;
+}
+
+/* Footer */
+.login-footer {
+  border-top-color: #E5EBE6 !important;
+  color: #7A877F !important;
+}
+
+/* Error tetap merah sebagai status */
+.login-error {
+  background: #FFF5F5 !important;
+  border-color: #E5B9B9 !important;
+  color: #A33B3B !important;
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  .login-page {
+    padding: 18px 14px !important;
+  }
+
+  .login-card {
+    padding: 30px 22px !important;
+  }
+
+  .login-brand-mark {
+    width: 54px !important;
+    height: 54px !important;
+  }
+}
+
